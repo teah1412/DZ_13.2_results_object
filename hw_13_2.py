@@ -1,0 +1,49 @@
+import random
+import json
+import datetime
+
+# klasa
+class Result:
+    def __init__(self, attempts, player_name, date):
+        self.attempts = attempts
+        self.player_name = player_name
+        self.date = date
+
+# postavljam varijable
+current_time = datetime.datetime.now()
+secret = random.randint(1, 30)
+attempts = 0
+
+
+# otvaram dokument... nešto ne funkkcionira kada u dokumentu ima barem jedan rezultat?
+with open("results.txt", "r") as score_file:
+    score_list = json.loads(score_file.read())
+
+for score_dict in score_list:
+    print(str(attempts.__dict__["attempts"]) + " attempts, player: ", str(score.__dict__["player_name"]) + ", date: " + score.__dict__.get("date"))
+
+
+
+# pitam ime, postavljam new score i počinjem igru
+name = input("Please state your name for the score list: ")
+
+new_score = Result(attempts=attempts, player_name=name, date=str(datetime.datetime.now()))
+
+while True:
+    guess = int(input("Guess the secret number (between 1 and 30): "))
+    attempts += 1
+
+    if guess == secret:
+        print("You've guessed it - congratulations! It's number " + str(secret))
+        print("Attempts needed: " + str(attempts))
+        print("Score stored in score list.")
+
+        with open("results.txt", "w") as score_file:
+            score_file.write(str(new_score.__dict__))
+
+        break
+
+    elif guess > secret:
+        print("Your guess is not correct... try something smaller")
+    elif guess < secret:
+        print("Your guess is not correct... try something bigger")
